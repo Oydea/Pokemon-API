@@ -1,0 +1,149 @@
+<!DOCTYPE HTML>
+<html lang="pt-br">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>APIMon
+    </title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="top">
+    <div id="selectables">
+        <div>
+            <label for="type">Escolha uma Tipo:</label>
+            <select id="type" name="types">
+                <option id="water" value="water">Água</option>
+                <option id="dragon" value="dragon">Dragão</option>
+                <option id="electric" value="electric">Elétrico</option>
+                <option id="fairy" value="fairy">Fada</option>
+                <option id="ghost" value="ghost">Fantasma</option>
+                <option id="fire" value="fire">Fogo</option>
+                <option id="ice" value="ice">Gelo</option>
+                <option id="grass" value="grass">Grama</option>
+                <option id="bug" value="bug">Inseto</option>
+                <option id="fighting" value="fighting">Lutador</option>
+                <option id="steel" value="steel">Metálico</option>
+                <option id="normal" value="normal">Normal</option>
+                <option id="rock" value="rock">Pedra</option>
+                <option id="psychic" value="psychic">Psíquico</option>
+                <option id="dark" value="dark">Sombrio</option>
+                <option id="ground" value="ground">Solo</option>
+                <option id="poison" value="poison">Veneno</option>
+                <option id="flying" value="flying">Voador</option>
+            </select>
+        </div>
+        <div>
+            <label for="alt">Formas Alternativas</label>
+            <input type="checkbox" name="alt" id="alt">
+        </div>
+        <div>
+            <input type="button" value="Enviar" id="enviar">
+        </div>
+    </div>
+    <hr></div>
+    <div id="mostra"></div>
+    <div id="pokes"></div>
+
+    <script>
+        document.querySelector('#enviar').addEventListener('click', ready);
+        let typeMons = []
+        let altMons = []
+        let painel = document.querySelector("#mostra");
+        let results;
+        function ready() {
+            document.querySelector("#enviar").disabled = true;
+            results = document.querySelector('#pokes');
+            results.remove()
+            painel.innerHTML = "<h1>Filtrando Pokémons, aguarde.<h1>"
+            results = document.createElement("div");
+            results.setAttribute("id", "pokes");
+            document.body.appendChild(results);
+            typeFilter();
+        }
+        async function typeFilter() {
+            typeMons = []
+            altMons = []
+            let type;
+            let mon;
+            let typeInput = document.querySelector('#type').value;
+            let urlType = ('https://pokeapi.co/api/v2/type/' + typeInput)
+            try {
+                let resposta = await fetch(urlType);
+                type = await resposta.json();
+            } catch (err) {
+                console.log(err)
+            }
+            for (let aux = 0; aux < type.pokemon.length; aux++) {
+                try {
+                    let currentMon = await fetch(type.pokemon[aux].pokemon.url);
+                    mon = await currentMon.json();
+                } catch (err) {
+                    console.log(err)
+                }
+                if (mon.is_default == true) {
+                    typeMons.push(mon)
+                }
+                else {
+                    if ((document.getElementById("alt").checked == true) && ((mon.name.slice(0, 6) == "rotom-") || (mon.name.slice(0, 9) == "castform-") || (mon.name.slice((mon.name.length - 4)) == "mega") || (mon.name.slice((mon.name.length - 6)) == "mega-x") || (mon.name.slice((mon.name.length - 6)) == "mega-y") || (mon.name.slice((mon.name.length - 6)) == "primal") || (mon.name.slice((mon.name.length - 12)) == "rapid-strike") || ((mon.name.slice((mon.name.length - 5)) == "alola") && (mon.name.slice((mon.name.length - 11)) != "totem-alola")) || (mon.name.slice((mon.name.length - 5)) == "galar") || (mon.name.slice((mon.name.length - 5)) == "hisui") || (mon.name.slice((mon.name.length - 4)) == "-zen") || (mon.name.slice((mon.name.length - 14)) == "galar-standard") || (mon.name.slice(0, 9) == "necrozma-") || (mon.name.slice((mon.name.length - 7)) == "crowned") || (mon.name.slice(0, 9) == "oricorio-") || (mon.name.slice(0, 8) == "calyrex-") || (mon.name.slice(0, 9) == "wormadam-") || (mon.name.slice(0, 8) == "shaymin-") || (mon.name.slice(0, 9) == "meloetta-") || (mon.name.slice(0, 6) == "hoopa-"))) {
+                        altMons.push(mon)
+                    }
+                }
+            }
+            console.log(typeMons);
+            console.log(altMons);
+            painel.innerHTML = "<h1>Pokémons do tipo escolhido</h1>";
+            mostraDados(typeMons);
+            if (altMons.length > 0) {
+                mostraDados(altMons);
+            }
+        }
+        //--------------------------------------------------------------
+        function mostraDados(bixos) {
+            for (let aux = 0; aux < bixos.length; aux++) {
+                let monShow = document.createElement("div");
+                if (bixos == typeMons) {
+                    monShow.setAttribute("id", aux)
+                } else {
+                    monShow.setAttribute("id", (aux + "b"))
+                }
+                monShow.setAttribute("class", "pokecard")
+                document.getElementById("pokes").appendChild(monShow)
+                let monImg = document.createElement("img");
+                monImg.setAttribute("src", ("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/" + bixos[aux].id + ".png"))
+                let info = document.createElement("div");
+                info.setAttribute("id", "infobox");
+                let infoName = document.createElement("div");
+                infoName.innerText = bixos[aux].name.slice(0, 1).toUpperCase() + bixos[aux].name.slice(1);
+                let infoType1 = document.createElement("img");
+                infoType1.setAttribute("class", "type");
+                infoType1.setAttribute("src", ("./imagens/" + bixos[aux].types[0].type.name) + ".png");
+                let division = document.createElement("hr");
+                if (bixos == typeMons) {
+                    document.getElementById(aux).appendChild(monImg)
+                    document.getElementById(aux).appendChild(division)
+                    document.getElementById(aux).appendChild(info)
+                } else {
+                    document.getElementById(aux + "b").appendChild(monImg)
+                    document.getElementById(aux + "b").appendChild(division)
+                    document.getElementById(aux + "b").appendChild(info)
+                }
+                document.getElementById("infobox").appendChild(infoName)
+                document.getElementById("infobox").appendChild(infoType1)
+                if (bixos[aux].types.length == 2) {
+                    let infoType2 = document.createElement("img");
+                    infoType2.setAttribute("class", "type");
+                    infoType2.setAttribute("src", ("./imagens/" + bixos[aux].types[1].type.name) + ".png");
+                    document.getElementById("infobox").appendChild(infoType2);
+                }
+                document.getElementById("infobox").removeAttribute("id");
+                document.querySelector("#enviar").disabled = false;
+            }
+        }
+
+    </script>
+</body>
+
+</html>

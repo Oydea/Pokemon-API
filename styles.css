@@ -1,0 +1,125 @@
+#top{
+    background-color: white;
+    position: sticky;
+    top: 0px;
+    padding-top: 0.25%;
+
+}
+#top hr{
+    margin-bottom: 0;
+}
+#selectables{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(214, 214, 214);
+    border-radius: 10px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding: 0.2%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 342px;
+    height: 100%;
+    max-height: auto;
+    height: 20%;
+}
+option{
+    color:white;
+}
+#water{
+    background-color: #2992FF;
+}
+#dragon{
+    background-color: #5462D6;
+}
+#electric{
+    background-color: #FFDB00;
+}
+#fairy{
+    background-color: #FFB1FF;
+}
+#ghost{
+    background-color: #6E4570;
+}
+#fire{
+    background-color: #FF612C;
+}
+#ice{
+    background-color: #42BFFF;
+}
+#grass{
+    background-color: #42BF24;
+}
+#bug{
+    background-color: #9FA424;
+}
+#fighting{
+    background-color: #FFA202;
+}
+#steel{
+    background-color: #6AAED3;
+}
+#normal{
+    background-color: #999999;
+}
+#rock{
+    background-color: #BCB889;
+}
+#psychic{
+    background-color: #FF637F;
+}
+#dark{
+    background-color: #4F4747;
+}
+#ground{
+    background-color: #AB7939;
+}
+#poison{
+    background-color: #994DCF;
+}
+#flying{
+    background-color: #95C9FF;
+}
+#mostra{
+    text-align: center;
+}
+#pokes{
+    display: flex;
+    flex-flow: wrap;
+    justify-content: space-around;
+}
+.pokecard{
+    max-height: 375px;
+    max-width: 300px;
+    height: 100%;
+    width: 100%;
+    margin-bottom: 5px;
+    border: black solid 2px;
+    border-radius: 5%;
+}
+img{
+    height: 100%;
+    width: 100%;
+    border-radius: 25%;
+}
+img.type{
+    max-height: 32px;
+    max-width: 144px;
+    border-radius: 5%
+}
+.pokecard div{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-bottom: 5px;
+
+}
+.pokecard div div{
+    width: 100%;
+    text-align: center;
+    font-weight: bolder;
+}
+.pokecard hr{
+    margin: 0;
+}
